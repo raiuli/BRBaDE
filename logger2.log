@@ -1,0 +1,28 @@
+brb_optimization 2018-05-17 12:16:48,497 INFO     
+Antecedents:
+brb_optimization 2018-05-17 12:19:20,287 INFO     
+Antecedents:
+brb_optimization 2018-05-17 12:19:21,309 INFO      d11(
+brb_optimization 2018-05-17 12:19:24,532 INFO      d12(
+brb_optimization 2018-05-17 12:19:25,425 INFO     
+Antecedents:
+brb_optimization 2018-05-17 12:19:26,027 INFO      d21(
+brb_optimization 2018-05-17 12:19:26,701 INFO      d22(
+brb_optimization 2018-05-17 12:19:27,214 INFO     
+Antecedents:
+brb_optimization 2018-05-17 12:19:30,369 INFO      d11(
+brb_optimization 2018-05-17 12:19:30,952 INFO      d12(
+brb_optimization 2018-05-17 12:19:31,320 INFO     
+Antecedents:
+brb_optimization 2018-05-17 12:19:31,777 INFO      d21(
+brb_optimization 2018-05-17 12:19:32,821 INFO      d22(
+brb_optimization 2018-05-17 12:25:02,786 INFO     Antecedents:
+brb_optimization 2018-05-17 12:25:03,819 INFO      d11(
+brb_optimization 2018-05-17 12:25:03,831 INFO     1.00 0.50 0.00 )
+brb_optimization 2018-05-17 12:25:04,801 INFO      d12(
+brb_optimization 2018-05-17 12:25:04,804 INFO     1.00 0.50 0.00 )
+brb_optimization 2018-05-17 12:25:05,884 INFO     Antecedents:
+brb_optimization 2018-05-17 12:25:06,403 INFO      d21(
+brb_optimization 2018-05-17 12:25:06,409 INFO     2.00 1.00 0.00 )
+brb_optimization 2018-05-17 12:25:07,357 INFO      d22(
+brb_optimization 2018-05-17 12:25:07,360 INFO     2.00 1.00 0.00 )

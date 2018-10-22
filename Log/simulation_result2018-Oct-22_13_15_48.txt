@@ -1,0 +1,34 @@
+Starting program 22-Oct-2018 13:15:48 
+
+Starting Cross validation No 1: Training Data Point 390, Testing Data Point 110
+Antecedents: x2(17.00 ) x3(27.00 ) x4(1188897.00 )=>x1 (5.00 2.00 0.00 )
+Number of Varaibles: 13=3(CR)+3(AW)+1(RW)+3(BD)+3(Arefv)
+
+Intial value
+Attribute Weights
+1 1 1 
+RuleWeights
+1 
+Belief Degrees
+0.00 0.30 0.70 1.00 1.00 1.00 
+Consequent utlity values
+1 1 1 
+Antecedent utlity values
+1 1 1 
+F=0.33381
+Number of Function call= 130650.00
+
+best seed= 1
+best F=0.33381
+X=>0.1926 0.5848 0.3433 0.2445 0.8727 0.0000 0.1273 0.2426 0.5972 0.1602 1648616.1055 38.6922 6.9636 
+Optimizied value
+Attribute Weights
+0.19 0.58 0.34 
+RuleWeights
+0.24 
+Belief Degrees
+0.87 0.00 0.13 0.24 0.60 0.16 1648616.11 38.69 6.96 
+Consequent utlity values
+0.24 0.60 0.16 
+Antecedent utlity values
+1648616.11 38.69 6.96 

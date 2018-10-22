@@ -1,0 +1,3 @@
+Starting program 21-Oct-2018 07:45:06 
+
+Starting Cross validation No 1: Training Data Point 246, Testing Data Point 61

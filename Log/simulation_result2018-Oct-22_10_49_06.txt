@@ -1,0 +1,5 @@
+Starting program 22-Oct-2018 10:49:06 
+
+Starting Cross validation No 1: Training Data Point 383, Testing Data Point 117
+Antecedents: x2(17.00 ) x3(27.00 ) x4(1188897.00 )=>x1 (5.00 2.00 0.00 )
+Number of Varaibles: 21=3(CR)+3(AW)+3(RW)+9(BD)+3(Arefv)
