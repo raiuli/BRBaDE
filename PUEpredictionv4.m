@@ -1,4 +1,5 @@
 % Stat clear previous data
+% adding git
 clear;
 clc;
 format compact;
