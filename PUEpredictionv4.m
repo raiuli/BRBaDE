@@ -14,7 +14,7 @@ filename = strcat('randomConf',dateString,'.mat');
 load('randomConf2018-Oct-23_20_40_22.mat', 's');
 rng(s);
 %s=rng();
-save(filename,'s')
+save(filename,'s');
 %delete(gcp('nocreate'))
 %parpool('local',4)
 global input outputOpti observedOutput...
