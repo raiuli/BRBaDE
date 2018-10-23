@@ -28,7 +28,7 @@ for i=1: size(num,2)
     hold off
     saveas(gcf,filename,'epsc');
 end
-y = datasample(num,500)
+y = datasample(num,100)
 csvwrite('test.csv',y);
 for i=1: size(y,2)
     [h,stats]=cdfplot(num(:,i))

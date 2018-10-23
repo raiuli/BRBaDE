@@ -10,11 +10,11 @@ addpath(pwd+"/BRBADE");
 %load('randomConf.mat','s')
 formatOut = 'yyyy-mmm-dd_HH_MM_SS';
 dateString = datestr(datetime('now'),formatOut);
-%filename = strcat('randomConf',dateString,'.mat');
-%load('randomConf2018-Oct-04_12_05_55.mat', 's');
-%rng(s);
+filename = strcat('randomConf',dateString,'.mat');
+load('randomConf2018-Oct-23_20_40_22.mat', 's');
+rng(s);
 %s=rng();
-%save(filename,'s')
+save(filename,'s')
 %delete(gcp('nocreate'))
 %parpool('local',4)
 global input outputOpti observedOutput...
@@ -33,8 +33,10 @@ fprintf(fid_x1,'Starting program %s \n',dateString);
 %read input file
 %fid = fopen ('JISC_Dataset_Paper_refined-2.csv', 'r');
 
-fid = fopen ('JISC_Dataset_Paper_refined-2_short.csv', 'r');
+%fid = fopen ('JISC_Dataset_Paper_refined-2_small.csv', 'r');
 %fid = fopen ('SecDataset.txt', 'r');
+fid = fopen ('SecDatasetstiny.txt', 'r');
+
 
 %fid = fopen ('inputJBY.txt', 'r');
 numberOfInputData=0;
@@ -72,20 +74,20 @@ for counter =1:5
     mapObj = containers.Map(keySet,valueSet);
     %numberOfInputData=numberOfInputData-1;
     %sizeOfData=numberOfInputData;
-        brbTree(1).antecedent=cellstr(['x2';'x3';'x4']);
-        brbTree(1).antRefval={[1188897 608186 27475];
-                              [27 23 21];
-                              [17 10 3]
-                             };
-    
-        brbTree(1).consequent=cellstr('x1');
-        brbTree(1).conRefval=[5 2 0];
+%         brbTree(1).antecedent=cellstr(['x2';'x3';'x4']);
+%         brbTree(1).antRefval={[1188897 608186 27475];
+%                               [27 23 21];
+%                               [17 10 3]
+%                              };
 %     
-%     brbTree(1).antecedent=cellstr(['x22';'x23']);
-%     brbTree(1).antRefval={[110 56 2];
-%         [11 5.75 0.5]};
-%     brbTree(1).consequent=cellstr('x08');
-%     brbTree(1).conRefval=[0.9 0.7 0.5];
+%         brbTree(1).consequent=cellstr('x1');
+%         brbTree(1).conRefval=[5 2 0];
+%     
+    brbTree(1).antecedent=cellstr(['x22';'x23']);
+    brbTree(1).antRefval={[110 56 2];
+        [11 5.75 0.5]};
+    brbTree(1).consequent=cellstr('x08');
+    brbTree(1).conRefval=[0.9 0.7 0.5];
     %brbTree(1).rulebaseFile=['rulebaseX08.txt'];
     
     fid_tp = fopen ('Log/trainedParam.txt', 'a');
@@ -264,7 +266,7 @@ for counter =1:5
         end
         %NP = 100;
         % itermax       maximum number of iterations (generations)
-        itermax = 3000;
+        itermax = 1000;
         
         % F             DE-stepsize F ex [0, 2]
         F = 0.8;
@@ -278,7 +280,7 @@ for counter =1:5
         %                4 --> DE/best/2/exp           9 --> DE/best/2/bin
         %                5 --> DE/rand/2/exp           else  DE/rand/2/bin
         
-        strategy = 1;
+        strategy = 7;
         
         % refresh       intermediate output will be produced after "refresh"
         %               iterations. No intermediate output will be produced
@@ -291,18 +293,18 @@ for counter =1:5
         % s = struct([])
         for i=1:1
             %v(i)= rng(i);
-            v(i)=rng();
-            [x,f,nf] = BRBaDEv5('objFunAllParallelv6',VTR,D,XVmin,XVmax,y,NP,itermax,F,CR,strategy,refresh,brbConfigdata,i)
+            %v(i)=rng();
+            [x,f,nf] = BRBaDEv6('objFunAllParallelv6',VTR,D,XVmin,XVmax,y,NP,itermax,F,CR,strategy,refresh,brbConfigdata,i)
             trainparameter(i,:)=x';
             fvalue(i)=f;
             nofof(i)=nf;
         end
         for i=1:1
-            formatOut = 'yyyy-mmm-dd_HH_MM_SS';
-            dateString = datestr(datetime('now'),formatOut);
-            filename = strcat('randomConf_',num2str(i),'_',dateString,'.mat');
-            ss=v(i);
-            save(filename,'ss');
+            %formatOut = 'yyyy-mmm-dd_HH_MM_SS';
+            %dateString = datestr(datetime('now'),formatOut);
+            %filename = strcat('randomConf_',num2str(i),'_',dateString,'.mat');
+            %ss=v(i);
+            %save(filename,'ss');
             fprintf(fid_x1,'\nF=%2.5f\n',fvalue(i));
             fprintf (fid_x1,'Number of Function call= %2.2f\n',nofof(i));
         end
@@ -333,8 +335,8 @@ for counter =1:5
         fprintf (fid_x1,'%2.2f ', x0(numOfVariables-numOfconRefval-numOfAntecedentsRefVals+1:numOfVariables-numOfAntecedentsRefVals) );
         fprintf (fid_x1,'\nAntecedent utlity values\n');
         fprintf (fid_x1,'%2.2f ', x0(numOfVariables-numOfAntecedentsRefVals+1:numOfVariables) );
-        brbStructSets=[];
-        brbParaSets=[];
+%        brbStructSets=struct([]);
+%        brbParaSets=struct([]);
         brbStructSets(1)=brbTree(brdTreeID);
         %brbStructSets(2)=brbTree(brdTreeID);
         brbParaSets(1)={x0};
@@ -365,7 +367,7 @@ for counter =1:5
             if (NP>300)
                 NP=300;
             end
-            [x,f,nf] = BRBaDEv5('objFunAllParallelv6',VTR,D,XVmin,XVmax,y,NP,itermax,F,CR,strategy,refresh,brbConfigdata,1)
+            [x,f,nf] = BRBaDEv6('objFunAllParallelv6',VTR,D,XVmin,XVmax,y,NP,itermax,F,CR,strategy,refresh,brbConfigdata,1)
             fprintf(fid_x1,'Optimizied value\n');
             fprintf (fid_x1,'Attribute Weights\n');
             fprintf (fid_x1,'%2.2f ', x(1:brbConfigdata.numOfAttrWeight) );
@@ -445,8 +447,8 @@ for counter =1:5
         brbConfigdata.observedOutput=observedOutput;
         brbConfigdata.transformedRefVal=transformedRefVal;
         brbConfigdata.sizeOfData=sizeOfData;
-        fprintf(fid_x1,'\nF=%2.5f\n',best_params);
-        fprintf(fid_x1,'Optimizied parameter value\n');
+        fprintf(fid_x1,'\n%2.5f ',best_params);
+        fprintf(fid_x1,'\nOptimizied parameter value\n');
         fprintf (fid_x1,'Attribute Weights\n');
         fprintf (fid_x1,'%2.2f ', best_params(1:best_brbConfigdata.numOfAttrWeight) );
         fprintf (fid_x1,'\nRuleWeights\n');

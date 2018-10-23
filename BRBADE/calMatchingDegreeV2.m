@@ -34,6 +34,7 @@ function matchingDegree=calMatchingDegreeV2(transformedRefVal,attrWeight)
 %attrWeight=gpuArray(attrWeight1);
 X=transformedRefVal;
 Y=attrWeight;
+attrWeight=attrWeight/max(attrWeight);
 for i=1:size(transformedRefVal,1)
     
     transformedRefVal(i,:)=mat2cell(power(cell2mat(transformedRefVal(i,:)),attrWeight(i)),1);
