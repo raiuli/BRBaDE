@@ -345,6 +345,7 @@ for counter =1:5
         %brbConfigdatas(2)=brbConfigdata;
         best_f=f;
         best_stuct=brbTree(brdTreeID);
+        best_params=x0;
         %counter=2;
         oldBestvalCounter=1;
         oldBestval=zeros(1,10);
