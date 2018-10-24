@@ -33,9 +33,9 @@ fprintf(fid_x1,'Starting program %s \n',dateString);
 %read input file
 %fid = fopen ('JISC_Dataset_Paper_refined-2.csv', 'r');
 
-fid = fopen ('JISC_Dataset_Paper_refined-2_small.csv', 'r');
+%fid = fopen ('JISC_Dataset_Paper_refined-2_small.csv', 'r');
 %fid = fopen ('SecDataset.txt', 'r');
-%fid = fopen ('SecDatasetstiny.txt', 'r');
+fid = fopen ('SecDatasetstiny.txt', 'r');
 
 
 %fid = fopen ('inputJBY.txt', 'r');
@@ -74,20 +74,20 @@ for counter =1:5
     mapObj = containers.Map(keySet,valueSet);
     %numberOfInputData=numberOfInputData-1;
     %sizeOfData=numberOfInputData;
-        brbTree(1).antecedent=cellstr(['x2';'x3';'x4']);
-        brbTree(1).antRefval={[1188897 608186 27475];
-                              [27 23 21];
-                              [17 10 3]
-                             };
-    
-        brbTree(1).consequent=cellstr('x1');
-        brbTree(1).conRefval=[5 2 0];
+%         brbTree(1).antecedent=cellstr(['x2';'x3';'x4']);
+%         brbTree(1).antRefval={[1188897 608186 27475];
+%                               [27 23 21];
+%                               [17 10 3]
+%                              };
 %     
-%     brbTree(1).antecedent=cellstr(['x22';'x23']);
-%     brbTree(1).antRefval={[110 56 2];
-%         [11 5.75 0.5]};
-%     brbTree(1).consequent=cellstr('x08');
-%     brbTree(1).conRefval=[0.9 0.7 0.5];
+%         brbTree(1).consequent=cellstr('x1');
+%         brbTree(1).conRefval=[5 2 0];
+%     
+    brbTree(1).antecedent=cellstr(['x22';'x23']);
+    brbTree(1).antRefval={[110 56 2];
+        [11 5.75 0.5]};
+    brbTree(1).consequent=cellstr('x08');
+    brbTree(1).conRefval=[0.9 0.7 0.5];
     %brbTree(1).rulebaseFile=['rulebaseX08.txt'];
     
     fid_tp = fopen ('Log/trainedParam.txt', 'a');
@@ -174,7 +174,7 @@ for counter =1:5
         %x0=initialVal{brdTreeID};
         %x0=horzcat(x0,initialValConsequent);
         %initialiaze the constraints
-        lb = zeros(1,numOfVariables);
+        lb = zeros(1,numOfVariables)+0.000001;
         ub =ones(1,numOfVariables);
         lb(numOfAttrWeight+numOfRuleWeight+numOfbeliefDegrees+1:numOfVariables-numOfAntecedentsRefVals)=lbCU;
         ub(numOfAttrWeight+numOfRuleWeight+numOfbeliefDegrees+1:numOfVariables-numOfAntecedentsRefVals)=ubCU;
