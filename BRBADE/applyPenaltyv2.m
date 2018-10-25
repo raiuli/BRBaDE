@@ -1,4 +1,4 @@
-function f=applyPenaltyv2(x,numOfAttrWeight,numOfRuleWeight,numOfconRefval,numOfVariables,conseQuentRef,numOfAntecedentsRefVals)
+function f=applyPenaltyv2(x,numOfAttrWeight,numOfRuleWeight,numOfconRefval,numOfVariables,conseQuentRef,numOfAntecedentsRefVals,brbConfigdata,XVmin,XVmax)
         lam=0.5;
         constrainUnstaisfied=0;
         t=x;
@@ -45,13 +45,30 @@ function f=applyPenaltyv2(x,numOfAttrWeight,numOfRuleWeight,numOfconRefval,numOf
                constrainUnstaisfied=constrainUnstaisfied+lam*1^2;
         end
         %antecedent attribute utilty values
-%         c=t(numOfVariables-numOfAntecedentsRefVals+1:numOfVariables);
-%         if sum(c<0) >0
-%             constrainUnstaisfied=constrainUnstaisfied+lam*1^2;
-%         end
-%         if sum(c>1) >0
-%             constrainUnstaisfied=constrainUnstaisfied+lam*1^2;
-%         end
+        antcedentsUVs=t(numOfVariables-numOfAntecedentsRefVals+1:numOfVariables);
+        antcedentsUVsXVmin=XVmin(numOfVariables-numOfAntecedentsRefVals+1:numOfVariables);
+        antcedentsUVsXVmax=XVmax(numOfVariables-numOfAntecedentsRefVals+1:numOfVariables);
+        marker=1;
+        for i=1:length(brbConfigdata.brbTree.antRefval)
+            antecedentUVSize=size(brbConfigdata.brbTree.antRefval{i},2);
+            antcedentUVs=antcedentsUVs(marker:marker+antecedentUVSize-1);
+            antcedentUVsXVmin=antcedentsUVsXVmin(marker:marker+antecedentUVSize-1);
+            antcedentUVsXVmax=antcedentsUVsXVmax(marker:marker+antecedentUVSize-1);
+            
+            if antcedentUVs(1)~=antcedentUVsXVmax(1)
+                constrainUnstaisfied=constrainUnstaisfied+lam*1^2;
+            end    
+            if antcedentUVs(size(antcedentUVs,2))~=antcedentUVsXVmin(1)
+                constrainUnstaisfied=constrainUnstaisfied+lam*1^2;
+            end 
+            a=sort(antcedentUVs,'descend');
+        
+            if ~isequal(a,antcedentUVs)
+                   constrainUnstaisfied=constrainUnstaisfied+lam*1^2;
+            end
+            marker=marker+antecedentUVSize;
+        end
+
         f=   constrainUnstaisfied;
         %fprintf ('Penalty=>%2.2f\n', f);
         %t(numOfVariables-numOfconRefval+1:numOfVariables) = sort(t(numOfVariables-numOfconRefval+1:numOfVariables),'descend');

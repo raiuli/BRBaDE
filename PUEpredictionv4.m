@@ -11,10 +11,10 @@ addpath(pwd+"/BRBADE");
 formatOut = 'yyyy-mmm-dd_HH_MM_SS';
 dateString = datestr(datetime('now'),formatOut);
 filename = strcat('randomConf',dateString,'.mat');
-%load('randomConf2018-Oct-23_20_40_22.mat', 's');
-%rng(s);
-s=rng();
-save(filename,'s');
+load('randomConf2018-Oct-25_14_13_46', 's');
+rng(s);
+%s=rng();
+%save(filename,'s');
 %delete(gcp('nocreate'))
 %parpool('local',4)
 global input outputOpti observedOutput...
@@ -350,7 +350,7 @@ for counter =1:5
         oldBestvalCounter=1;
         oldBestval=zeros(1,10);
         fprintf(fid_x1,'\n\nStarting Structure optimization\n');
-        for it=1:20
+        for it=1:10
             fprintf(fid_x1,'\n\n-----------------------------------------\n');
         %while all(oldBestval-oldBestval(1)) && (lenght(oldBestval)==10)
             newbrbStructSet= StructureOptimizationv1(brbStructSets,brbParaSets,brbConfigdatas);
@@ -448,7 +448,7 @@ for counter =1:5
         brbConfigdata.observedOutput=observedOutput;
         brbConfigdata.transformedRefVal=transformedRefVal;
         brbConfigdata.sizeOfData=sizeOfData;
-        fprintf(fid_x1,'\n%2.5f ',best_params);
+        fprintf(fid_x1,'%2.5f ',best_params);
         fprintf(fid_x1,'\nOptimizied parameter value\n');
         fprintf (fid_x1,'Attribute Weights\n');
         fprintf (fid_x1,'%2.2f ', best_params(1:best_brbConfigdata.numOfAttrWeight) );

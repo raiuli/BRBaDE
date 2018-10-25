@@ -1,4 +1,4 @@
-function [bestmem,bestval,nfeval] = BRBaDEv5(fname,VTR,D,XVmin,XVmax,y,NP,itermax,F,CR,strategy,refresh,brbConfigdata,instance_num)
+function [bestmem,bestval,nfeval] = BRBaDEv6(fname,VTR,D,XVmin,XVmax,y,NP,itermax,F,CR,strategy,refresh,brbConfigdata,instance_num)
 %    Raihan
 %this one with panalty for constraint violation
 %
@@ -523,9 +523,10 @@ while ((iter < itermax) & (bestval > VTR))
          indx= ui(i,:)>XVmax;
          ui(i,indx)=XVmax(indx);
      end
-    parfor i=1:NP
+    for i=1:NP
         tempval(i) = feval(fname,ui(i,:),brbConfigdata);
-        tempval(i) =tempval(i) +applyPenaltyv2(ui(i,:),numOfAttrWeight,numOfRuleWeight,numOfconRefval,numOfVariables,conseQuentRef,numOfAntecedentsRefVals);
+        tempval(i) =tempval(i) +applyPenaltyv2(ui(i,:),numOfAttrWeight,numOfRuleWeight,numOfconRefval,numOfVariables,conseQuentRef,...
+                                                numOfAntecedentsRefVals,brbConfigdata,XVmin,XVmax);
         nfeval  = nfeval + 1;
     end
     for i=1:NP 
