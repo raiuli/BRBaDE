@@ -338,6 +338,11 @@ for counter =1:5
 %        brbStructSets=struct([]);
 %        brbParaSets=struct([]);
         brbStructSets(1)=brbTree(brdTreeID);
+        j_k=0;
+        for i=1:size(brbTree(brdTreeID).antRefval,1)
+                    theta_t=cell2mat(brbTree(brdTreeID).antRefval(i,:));
+                    j_k=j_k+length(theta_t);
+        end
         %brbStructSets(2)=brbTree(brdTreeID);
         brbParaSets(1)={x0};
         %brbParaSets(2)={x0};
@@ -348,59 +353,72 @@ for counter =1:5
         best_params=x0;
         %counter=2;
         oldBestvalCounter=1;
-        oldBestval=zeros(1,10);
+        %oldBestval=zeros(1,10);
         fprintf(fid_x1,'\n\nStarting Structure optimization\n');
-        for it=1:10
+        oldBestval=[];
+        
+        for it=1:10000
             fprintf(fid_x1,'\n\n-----------------------------------------\n');
         %while all(oldBestval-oldBestval(1)) && (lenght(oldBestval)==10)
             newbrbStructSet= StructureOptimizationv1(brbStructSets,brbParaSets,brbConfigdatas);
             celldisp(newbrbStructSet.antRefval)
-            
+            j_t=0;
+            for i=1:size(newbrbStructSet.antRefval,1)
+                    theta_t=cell2mat(newbrbStructSet.antRefval(i,:));
+                    j_t=j_t+length(theta_t);
+            end
             %newbrbStructSet.antRefval={[ 2    99];
             %[ 0.5000]};
-           
-            brbConfigdata.brbTree=newbrbStructSet;
-            [lb,ub,brbConfigdata]=UpdateParametersv1(brbConfigdata,fid_x1,lbCU,ubCU);
-            XVmin = lb;
-            XVmax = ub;
-            D = brbConfigdata.numOfVariables;
-            NP = 10*brbConfigdata.numOfVariables;
-            if (NP>300)
-                NP=300;
-            end
-            [x,f,nf] = BRBaDEv6('objFunAllParallelv6',VTR,D,XVmin,XVmax,y,NP,itermax,F,CR,strategy,refresh,brbConfigdata,1)
-            fprintf(fid_x1,'Optimizied value\n');
-            fprintf (fid_x1,'Attribute Weights\n');
-            fprintf (fid_x1,'%2.2f ', x(1:brbConfigdata.numOfAttrWeight) );
-            fprintf (fid_x1,'\nRuleWeights\n');
-            fprintf (fid_x1,'%2.2f ', x(brbConfigdata.numOfAttrWeight+1:brbConfigdata.numOfAttrWeight+brbConfigdata.numOfRuleWeight) );
-            fprintf (fid_x1,'\nBelief Degrees\n');
-            z=x(brbConfigdata.numOfAttrWeight+brbConfigdata.numOfRuleWeight+1:brbConfigdata.numOfVariables-brbConfigdata.numOfconRefval-brbConfigdata.numOfAntecedentsRefVals);
-            fprintf (fid_x1,'%2.2f ',z);
-            fprintf (fid_x1,'\nConsequent utlity values\n');
-            fprintf (fid_x1,'%2.2f ', x(brbConfigdata.numOfVariables-brbConfigdata.numOfconRefval-brbConfigdata.numOfAntecedentsRefVals+1:brbConfigdata.numOfVariables-brbConfigdata.numOfAntecedentsRefVals) );
-            fprintf (fid_x1,'\nAntecedent utlity values\n');
-            fprintf (fid_x1,'%2.2f ', x(brbConfigdata.numOfVariables-brbConfigdata.numOfAntecedentsRefVals+1:brbConfigdata.numOfVariables) );
-            fprintf(fid_x1,'\nF=%2.5f\n',f);
-            fprintf (fid_x1,'Number of Function call= %2.2f\n',nf);
-            %  if f<best_f && checkNumOFrefValue(best_stuct,newbrbStructSet)==1
-            fprintf ('iter=%d,best=%2.5f,current=%2.5f, elements in StructureSet=%d\n',it,best_f,f,length(brbStructSets));
-            fprintf (fid_x1,'iter=%d,best=%2.5f,current=%2.5f, elements in StructureSet=%d\n',it,best_f,f,length(brbStructSets));
-            if f<best_f 
-                brbStructSets(counter)=newbrbStructSet;
-                brbParaSets(counter)={x};
-                brbConfigdatas(counter)=brbConfigdata;
-                %counter=counter+1;
-                best_f=f;
-                best_stuct=newbrbStructSet;
-                best_params=x;
-                best_brbConfigdata=brbConfigdata;
-                if length(oldBestval)==10
-                    oldBestval=zeros(1,10);
+            %if j_t<=j_k
+                brbConfigdata.brbTree=newbrbStructSet;
+                [lb,ub,brbConfigdata]=UpdateParametersv1(brbConfigdata,fid_x1,lbCU,ubCU);
+                XVmin = lb;
+                XVmax = ub;
+                D = brbConfigdata.numOfVariables;
+                NP = 10*brbConfigdata.numOfVariables;
+                if (NP>300)
+                    NP=300;
                 end
-                oldBestval(oldBestvalCounter)=length(newbrbStructSet);
-                oldBestvalCounter=oldBestvalCounter+1;
+                [x,f,nf] = BRBaDEv6('objFunAllParallelv6',VTR,D,XVmin,XVmax,y,NP,itermax,F,CR,strategy,refresh,brbConfigdata,1)
+                fprintf(fid_x1,'Optimizied value\n');
+                fprintf (fid_x1,'Attribute Weights\n');
+                fprintf (fid_x1,'%2.2f ', x(1:brbConfigdata.numOfAttrWeight) );
+                fprintf (fid_x1,'\nRuleWeights\n');
+                fprintf (fid_x1,'%2.2f ', x(brbConfigdata.numOfAttrWeight+1:brbConfigdata.numOfAttrWeight+brbConfigdata.numOfRuleWeight) );
+                fprintf (fid_x1,'\nBelief Degrees\n');
+                z=x(brbConfigdata.numOfAttrWeight+brbConfigdata.numOfRuleWeight+1:brbConfigdata.numOfVariables-brbConfigdata.numOfconRefval-brbConfigdata.numOfAntecedentsRefVals);
+                fprintf (fid_x1,'%2.2f ',z);
+                fprintf (fid_x1,'\nConsequent utlity values\n');
+                fprintf (fid_x1,'%2.2f ', x(brbConfigdata.numOfVariables-brbConfigdata.numOfconRefval-brbConfigdata.numOfAntecedentsRefVals+1:brbConfigdata.numOfVariables-brbConfigdata.numOfAntecedentsRefVals) );
+                fprintf (fid_x1,'\nAntecedent utlity values\n');
+                fprintf (fid_x1,'%2.2f ', x(brbConfigdata.numOfVariables-brbConfigdata.numOfAntecedentsRefVals+1:brbConfigdata.numOfVariables) );
+                fprintf(fid_x1,'\nF=%2.5f\n',f);
+                fprintf (fid_x1,'Number of Function call= %2.2f\n',nf);
+                %  if f<best_f && checkNumOFrefValue(best_stuct,newbrbStructSet)==1
+                fprintf ('iter=%d,best=%2.5f,current=%2.5f, elements in StructureSet=%d\n',it,best_f,f,length(brbStructSets));
+                fprintf (fid_x1,'iter=%d,best=%2.5f,current=%2.5f, elements in StructureSet=%d\n',it,best_f,f,length(brbStructSets));
+                
+                if f<=best_f 
+                    brbStructSets(counter)=newbrbStructSet;
+                    brbParaSets(counter)={x};
+                    brbConfigdatas(counter)=brbConfigdata;
+                    %counter=counter+1;
+                    best_f=f;
+                    best_stuct=newbrbStructSet;
+                    best_params=x;
+                    best_brbConfigdata=brbConfigdata;
+                    j_k=j_t;
+
+                end
+            %end
+            if length(oldBestval)>6
+                if (sum(oldBestval(length(oldBestval)-5:end)-oldBestval(end))==0)
+                    break;
+                end
             end
+            oldBestval(oldBestvalCounter)=j_t;
+            oldBestvalCounter=oldBestvalCounter+1;
+            
         end
         
         fprintf (fid_x1,'============================================================\n');
